@@ -89,12 +89,12 @@ const LoginScreen = ({ iniciarSesion, guardarUsuario }) => {
                 </button>
               </div>
             </form>
+            {/*  Mostrar componente de mensaje obtenido en la respuesta de la API */}
             {resultado?.msg && (
               <div className="mt-2">
                 <MessageApp mensaje={resultado.msg} />
               </div>
             )}
-            {/*  Mostrar componente de mensaje obtenido en la respuesta de la API */}
           </div>
         </div>
       </div>
