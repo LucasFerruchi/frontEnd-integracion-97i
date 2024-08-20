@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
+//obener cursos
 import { getCursoById, actualizarCurso } from "../helpers/cursoApi";
+//obtener categorias
 import { getCategorias } from "../helpers/categoriaApi";
 
+//sweet alert
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
+//modal react-bootstrap
 import Modal from "react-bootstrap/Modal";
 
 const ModalEdit = ({ show, handleClose, cid }) => {
   const MySwal = withReactContent(Swal);
 
+  //estados para cursos y categorias
   const [curso, setCurso] = useState(null);
   const [categorias, setCategorias] = useState(null);
 
@@ -31,14 +36,16 @@ const ModalEdit = ({ show, handleClose, cid }) => {
   };
 
   const handleChange = (e) => {
-    //Manejar el evento change del formulario y guardar los datos en el estado
+    //switch
     let valueCheck = false;
+
     if (e.target.name === "destacado") {
       if (e.target.checked) {
         valueCheck = true;
       } else {
         valueCheck = false;
       }
+      //actualizar el estado destacado del curso
       setCurso({
         ...curso,
         [e.target.name]: valueCheck,
@@ -54,7 +61,7 @@ const ModalEdit = ({ show, handleClose, cid }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //Ejecutar funcion para actualizar el curso con los datos del estado
+    //funcion actualizar curso
     await actualizarCurso(cid, curso);
     MySwal.fire("Curso actualizado", "", "success");
     //cerrar el modal luego de editar
@@ -93,10 +100,12 @@ const ModalEdit = ({ show, handleClose, cid }) => {
                 onChange={handleChange}
                 name="precio"
               />
+
+              {/* categorias */}
               <div className="my-2">
                 <p>
                   <span className="fw-bold">Categoría actual:</span>{" "}
-                  {curso.categoria.nombre}
+                  {/* {curso.categoria.nombre} */}
                 </p>
                 <label className="fw-bold">Cambiar categoría</label>
                 <select
@@ -104,9 +113,8 @@ const ModalEdit = ({ show, handleClose, cid }) => {
                   name="categoria"
                   onChange={handleChange}
                 >
-                  <option value={curso.categoria.nombre}>
-                    Elije una categoría
-                  </option>
+                  {/* <option value={curso.categoria.nombre}> */}
+                  <option>Elije una categoría</option>
                   {categorias &&
                     categorias.map((categoria) => (
                       <option key={categoria._id} value={categoria._id}>
@@ -115,6 +123,8 @@ const ModalEdit = ({ show, handleClose, cid }) => {
                     ))}
                 </select>
               </div>
+
+              {/* switch */}
               <div className="form-check form-switch">
                 <input
                   className="form-check-input"

@@ -1,17 +1,33 @@
-const url = "http://localhost:8080/api/categorias";
+const url = "http://localhost:3000/api/categorias";
 const token = JSON.parse(localStorage.getItem("token"));
-const limite = 10;
+const limite = 6;
 
-export const getCategorias = async (pagina = 0) => {};
+//traer categorias - GET
+export const getCategorias = async (desde = 0) => {
+  try {
+    const resp = await fetch(url + "?limite=" + limite + "&desde=" + desde, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "x-token": token,
+      },
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("No se pudo obtener la informacion!");
+  }
+};
 
-//Traer categorías por el id
+//Traer categoría por id - GET
 export const getCategoriaById = async (id) => {};
 
-//crear categoria
-export const crearCategoria = async (datos) => {};
+//crear categoria - POST
+export const crearCategoria = async () => {};
 
-//Actualizar Categoría
-export const actualizarCategoria = async (id, datos) => {};
+//actualizar Categoría - PUT
+export const actualizarCategoria = async (id) => {};
 
-//Borrar Categoría
+//borrar Categoría - DELETE
 export const borrarCategoria = async (id) => {};

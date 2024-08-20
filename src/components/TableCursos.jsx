@@ -1,29 +1,33 @@
 import React, { useState } from "react";
 
-//importar funcion para borrar cursos de la API
+//funcion borrar curso
 import { borrarCurso } from "../helpers/cursoApi";
 
-//Librería sweet alert
+//sweet alert
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-//import componente de modal para editar
+//modal para editar
 import ModalEdit from "./ModalEdit";
 
-const TableCursos = ({ cursos = [] }) => {
+const TableCursos = ({ cursos, traerCursos }) => {
+  //sweet alert
   const MySwal = withReactContent(Swal);
 
-  //Manejo del modal--------------------
+  //Manejo del modal
   const [show, setShow] = useState(false);
+
+  //curso por id "cid"
   const [cid, setCid] = useState(null);
 
-  //manejar cierre de modal
+  //cierre del modal
   const handleClose = () => {
     setCid(null);
     setShow(false);
+    traerCursos();
   };
 
-  //Manejar apertura de modal
+  //apertura del modal
   const handleShow = (id) => {
     setCid(id);
     setShow(true);
@@ -31,6 +35,22 @@ const TableCursos = ({ cursos = [] }) => {
 
   //borrrar curso
   const inactivarCurso = async (nombre, id) => {
+    // MySwal.fire({
+    //   title: "Do you want to save the change?",
+    //   showDenyButton: true,
+    //   showCancelButton: true,
+    //   confirmButtonText: "Save",
+    //   denyButtonText: `don't save`,
+    // }).then((result) => {
+    //   /* Read more about isConfirmed, isDenied below */
+    //   if (result.isConfirmed) {
+    //     MySwal.fire("Saved!", "", "success");
+    //   } else if (result.isDenied) {
+    //     MySwal.fire("Changes are not saved", "", "info");
+    //   }
+    // });
+    //-----------------------------------------------------
+
     MySwal.fire({
       title: `Está seguro que quiere inactivar el curso ${nombre}?`,
       showDenyButton: true,
@@ -65,7 +85,9 @@ const TableCursos = ({ cursos = [] }) => {
           {cursos.map((curso) => (
             <tr key={curso._id}>
               <th>{curso.nombre}</th>
-              <td>{curso.categoria.nombre}</td>
+              {/* <td>{curso.categoria.nombre}</td> */}
+              <td>CATEGORIA</td>
+
               <td>{curso.precio}</td>
               <td>
                 {curso.destacado ? (

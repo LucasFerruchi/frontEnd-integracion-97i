@@ -3,22 +3,26 @@ import React, { useEffect, useState } from "react";
 //importar componente de tabla
 import TableCursos from "../components/TableCursos";
 
-//importar función para traer los cursos desde la API
+//traer los cursos
 import { getCursos } from "../helpers/cursoApi";
 
 const AdminScreen = () => {
-  //estado para guardar los cursos
+  //estado para controlar los cursos
   const [cursos, setCursos] = useState([]);
 
-  //cargar cursos cuando se monta y pendiente de actualización
+  //Total de cursos
+  const [totalCursos, setTotalCursos] = useState(0);
+
+  //cargar cursos en el montaje
   useEffect(() => {
     traerCursos();
   }, [cursos]);
 
   const traerCursos = async () => {
     //Ejecutar petición a la API
-    const { cursos } = await getCursos();
+    const { cursos, total } = await getCursos();
     setCursos(cursos);
+    setTotalCursos(total);
   };
 
   return (
@@ -36,8 +40,20 @@ const AdminScreen = () => {
         </div>
         <div className="row">
           <div className="col-12 col-md-8 offset-md-2">
-            {/* Componente de la tabla que carga los cursos  */}
-            <TableCursos cursos={cursos} />
+            {/* Tabla de cursos*/}
+            {cursos.length > 0 ? (
+              <>
+                <h4>Total de cursos: {totalCursos}</h4>
+
+                <TableCursos cursos={cursos} traerCursos={traerCursos} />
+              </>
+            ) : (
+              <div className="d-flex justify-content-center">
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
